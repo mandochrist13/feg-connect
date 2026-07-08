@@ -1,0 +1,333 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+
+  /* FEG brand palette — charte stricte (froide & institutionnelle) */
+  --color-feg-green: #063d21; /* vert FEG primaire */
+  --color-feg-green-foreground: #ffffff;
+  --color-feg-gold: #afae7e; /* doré FEG — accent discret uniquement */
+  --color-feg-gold-foreground: #063d21;
+  /* Dégradé métallique du globe du logo FEG (or clair → bronze olive) */
+  --color-feg-gold-light: #d8d6a6;
+  --color-feg-gold-deep: #8f8a58;
+  --color-feg-light-green: #e8f2ec; /* vert très pâle (chips claires) */
+  --color-feg-light-green-foreground: #063d21;
+  --color-ink: #0f172a; /* slate-900 froid */
+  --color-muted-ink: #64748b; /* slate-500 froid */
+
+  /* Verts profonds froids — sections sombres & superpositions */
+  --color-feg-forest: #084026; /* fond des sections sombres */
+  --color-feg-deep: #04301b; /* vert quasi noir (footer, ancrage) */
+  --color-feg-moss: #0f4a2b; /* vert intermédiaire (cartes sur fond sombre) */
+
+  /* Neutres froids (slate/zinc) */
+  --color-cool-50: #f8fafc;
+  --color-cool-100: #f1f5f9;
+  --color-cool-200: #e2e8f0;
+  --color-cool-400: #94a3b8;
+  --color-cool-500: #64748b;
+  --color-cool-700: #334155;
+  --color-cool-900: #0f172a;
+
+  /* Accent doré FEG — réservé aux FONDS SOMBRES (hero, label, CTA, footer).
+     Sur fond clair, l'accent est le vert FEG (géré dans les composants). */
+  --color-feg-amber: #afae7e; /* doré FEG */
+  --color-feg-amber-bright: #c2c19a; /* doré clair — texte doré sur fond sombre */
+
+  /* Neutres froids (alias de compat, gris slate) */
+  --color-feg-cream: #e2e8f0; /* -> cool-200 */
+  --color-feg-sand: #f8fafc; /* -> cool-50 */
+  --color-feg-khaki: #94a3b8; /* -> slate-400 froid */
+  --color-feg-gold-soft: #cbd5e1; /* -> slate-300 froid */
+
+  --ease-feg: cubic-bezier(0.16, 1, 0.3, 1);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    color: var(--color-ink);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  section[id],
+  footer[id] {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   FEG landing — animations & utilitaires
+--------------------------------------------------------------------------- */
+
+@keyframes feg-marquee-y {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes feg-marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes feg-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes feg-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes feg-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  75%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Reveal au scroll (piloté par IntersectionObserver — components/feg/reveal.tsx) */
+.feg-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.9s var(--ease-feg),
+    transform 0.9s var(--ease-feg);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.feg-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Marquee (components/feg/marquee.tsx) */
+.feg-marquee-track-x {
+  animation: feg-marquee-x var(--marquee-duration, 32s) linear infinite;
+}
+.feg-marquee-track-y {
+  animation: feg-marquee-y var(--marquee-duration, 18s) linear infinite;
+}
+.feg-marquee-reverse {
+  animation-direction: reverse;
+}
+.feg-marquee:hover .feg-marquee-track-x,
+.feg-marquee:hover .feg-marquee-track-y {
+  animation-play-state: paused;
+}
+.feg-mask-y {
+  mask-image: linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
+}
+.feg-mask-x {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+/* Entrées du hero (sans observer, jouées au chargement) */
+.feg-enter {
+  animation: feg-fade-up 1s var(--ease-feg) both;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+.feg-float {
+  animation: feg-float 7s ease-in-out infinite;
+}
+
+/* Point "live" avec halo */
+.feg-live-dot {
+  position: relative;
+}
+.feg-live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: feg-ping 2.2s var(--ease-feg) infinite;
+}
+
+/* Trame pointillée discrète pour les fonds sombres */
+.feg-grid-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* Accessibilité — mouvement réduit */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .feg-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .feg-enter {
+    animation: none;
+  }
+  .feg-float {
+    animation: none;
+  }
+  .feg-live-dot::after {
+    animation: none;
+    opacity: 0;
+  }
+  .feg-marquee-track-x,
+  .feg-marquee-track-y {
+    animation: none;
+  }
+  .feg-marquee .feg-marquee-copy {
+    display: none;
+  }
+  .feg-marquee-track-y {
+    flex-wrap: wrap;
+  }
+}

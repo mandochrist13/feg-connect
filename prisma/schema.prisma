@@ -1,0 +1,291 @@
+// ─────────────────────────────────────────────────────────────
+// Outil Sous-traitance — Base MÉTIER (séparée de l'Espace Adhérent)
+// SSO : Profile.userId = token.id (id de l'adhérent FEG). Seule liaison
+// inter-bases. Aucune fuite de données entre les deux apps (spec §9.2).
+// ─────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Enums (référentiels de la spec) ──────────────────────────
+
+// Label FEG — 3 niveaux (spec §7). "Certifié" = conformité, jamais un rang.
+enum LabelLevel {
+  NON_CERTIFIE
+  MEMBRE_FEG
+  CERTIFIE_FEG
+}
+
+// Processus de labellisation (spec §7.2).
+enum LabelStage {
+  CANDIDATURE
+  AUTO_EVALUATION
+  AUDIT
+  CONTRAT_LICENCE
+  DELIVRE
+  SURVEILLANCE
+}
+
+// Modalité d'un appel d'offres (spec §8.2).
+enum TenderModality {
+  SOUS_TRAITANCE
+  COTRAITANCE
+}
+
+// Forme de GME / cotraitance (spec glossaire §12).
+enum GmeForm {
+  SOLIDAIRE
+  CONJOINT
+  CONJOINT_MANDATAIRE_SOLIDAIRE
+}
+
+enum TenderStatus {
+  BROUILLON
+  PUBLIE
+  CLOTURE
+  ATTRIBUE
+  ANNULE
+}
+
+enum BidStatus {
+  SOUMISE
+  RETENUE
+  REJETEE
+  RETIREE
+}
+
+enum FlagStatus {
+  OUVERT
+  EN_COURS
+  TRAITE
+  REJETE
+}
+
+// ── Profil (1 par compte FEG) ────────────────────────────────
+
+model Profile {
+  userId String @id // = token.id (adhérent FEG). Clé de liaison SSO.
+
+  // Miroir informatif de l'identité FEG (source = JWT, lecture seule).
+  email      String?
+  nom        String?
+  prenom     String?
+  entreprise String?
+
+  // Rôles applicatifs PROPRES à cette app (pas issus du JWT FEG) — spec §6.
+  isDonneurOrdre Boolean @default(false)
+  isPrestataire  Boolean @default(false)
+
+  // Statut d'adhésion FEG lu via SSO (miroir, spec §5.4).
+  membershipStatus String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  provider     Provider?
+  tenders      Tender[]  @relation("DonneurOrdreTenders")
+  reviewsGiven Review[]  @relation("ReviewAuthor")
+  messagesSent Message[] @relation("MessageSender")
+  messagesRecv Message[] @relation("MessageRecipient")
+  flagsRaised  Flag[]    @relation("FlagReporter")
+}
+
+// ── Prestataire (fiche + Label) ──────────────────────────────
+
+model Provider {
+  id            String  @id @default(cuid())
+  profileUserId String  @unique
+  profile       Profile @relation(fields: [profileUserId], references: [userId], onDelete: Cascade)
+
+  secteur     String?
+  specialites String[]
+
+  labelLevel LabelLevel @default(NON_CERTIFIE)
+
+  // Indice de fiabilité — INDICATIF, non contractuel (spec §3, §9.2).
+  // Dérivé des Review ; recalculé, jamais saisi à la main.
+  indiceIndicatif Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  labelFile        LabelFile?
+  bids             Bid[]
+  reviews          Review[]
+  shortlistItems   ShortlistItem[]
+  groupMemberships GroupMember[]
+}
+
+// ── Dossier de labellisation (référentiel 4 blocs) ───────────
+
+model LabelFile {
+  id         String   @id @default(cuid())
+  providerId String   @unique
+  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  stage LabelStage @default(CANDIDATURE)
+
+  // Référentiel d'évaluation — 4 blocs A–D (spec §7.1).
+  scoreBlocA Float? // Gouvernance & Intégrité
+  scoreBlocB Float? // Conformité sociale & RH
+  scoreBlocC Float? // Conformité administrative & traçabilité
+  scoreBlocD Float? // Fiabilité commerciale & qualité
+
+  pieces    Json? // pièces du dossier
+  decisions Json? // décisions de conformité (critères publiés, récusation)
+  audit     Json? // audit tiers indépendant
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ── Appel d'offres ───────────────────────────────────────────
+
+model Tender {
+  id              String  @id @default(cuid())
+  donneurOrdreId  String
+  donneurOrdre    Profile @relation("DonneurOrdreTenders", fields: [donneurOrdreId], references: [userId], onDelete: Cascade)
+
+  modality TenderModality
+  gmeForm  GmeForm? // requis si modality = COTRAITANCE
+
+  titre   String
+  secteur String?
+  budget  Int?
+  delai   String?
+
+  minLabelLevel LabelLevel? // ciblage (spec §8.2)
+  criteria      Json? // pondérations publiées des critères de tri
+
+  status TenderStatus @default(BROUILLON)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  shortlist Shortlist?
+  bids      Bid[]
+  group     Group?
+}
+
+// ── Présélection automatique (résultat d'algorithme) ─────────
+
+model Shortlist {
+  id       String @id @default(cuid())
+  tenderId String @unique
+  tender   Tender @relation(fields: [tenderId], references: [id], onDelete: Cascade)
+
+  // Horodatage + critères tracés (spec §9.1). Généré, jamais écrit à la main.
+  generatedAt DateTime @default(now())
+  criteria    Json
+
+  items ShortlistItem[]
+}
+
+model ShortlistItem {
+  id          String    @id @default(cuid())
+  shortlistId String
+  shortlist   Shortlist @relation(fields: [shortlistId], references: [id], onDelete: Cascade)
+  providerId  String
+  provider    Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  rang  Int // rang objectif issu du tri pondéré
+  score Float
+
+  @@unique([shortlistId, providerId])
+}
+
+// ── Offre ────────────────────────────────────────────────────
+
+model Bid {
+  id         String   @id @default(cuid())
+  tenderId   String
+  tender     Tender   @relation(fields: [tenderId], references: [id], onDelete: Cascade)
+  providerId String
+  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  montant Int?
+  delai   String?
+  message String?
+  status  BidStatus @default(SOUMISE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenderId, providerId])
+}
+
+// ── Groupement (GME / cotraitance) ───────────────────────────
+
+model Group {
+  id       String @id @default(cuid())
+  tenderId String @unique
+  tender   Tender @relation(fields: [tenderId], references: [id], onDelete: Cascade)
+
+  form GmeForm
+
+  members GroupMember[]
+
+  createdAt DateTime @default(now())
+}
+
+model GroupMember {
+  id         String   @id @default(cuid())
+  groupId    String
+  group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  providerId String
+  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  isMandataire Boolean @default(false)
+
+  @@unique([groupId, providerId])
+}
+
+// ── Messagerie interne (anti-contournement, spec §9.2) ───────
+
+model Message {
+  id          String  @id @default(cuid())
+  tenderId    String?
+  senderId    String
+  sender      Profile @relation("MessageSender", fields: [senderId], references: [userId], onDelete: Cascade)
+  recipientId String
+  recipient   Profile @relation("MessageRecipient", fields: [recipientId], references: [userId], onDelete: Cascade)
+
+  body      String
+  createdAt DateTime @default(now())
+  readAt    DateTime?
+}
+
+// ── Évaluation client → alimente l'indice indicatif ──────────
+
+model Review {
+  id         String   @id @default(cuid())
+  providerId String
+  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  authorId   String
+  author     Profile  @relation("ReviewAuthor", fields: [authorId], references: [userId], onDelete: Cascade)
+
+  note      Int // évaluation transmise par le client
+  commentaire String?
+
+  createdAt DateTime @default(now())
+}
+
+// ── Signalement ──────────────────────────────────────────────
+
+model Flag {
+  id         String  @id @default(cuid())
+  reporterId String
+  reporter   Profile @relation("FlagReporter", fields: [reporterId], references: [userId], onDelete: Cascade)
+
+  targetType String // "provider" | "tender" | "message" | ...
+  targetId   String
+  motif      String
+  status     FlagStatus @default(OUVERT)
+
+  createdAt DateTime @default(now())
+}
