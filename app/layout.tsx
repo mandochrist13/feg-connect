@@ -18,14 +18,16 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: 'FEG Connect — Marketplace Sous-traitance & Cotraitance B2B',
   description:
-    'La marketplace B2B fermée de la Fédération des Entreprises du Gabon. Trouvez des prestataires qualifiés validés par la FEG ou répondez aux appels d’offres du réseau.',
+    'La marketplace B2B fermée de la Fédération des Entreprises du Gabon. Trouvez des prestataires certifiés par le Label FEG ou répondez aux appels d’offres du réseau.',
   generator: 'v0.app',
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
-      { url: '/icon-light-32x32.png', sizes: '32x32' },
+      // Logo FEG : couleur sur onglets clairs, blanc sur onglets sombres.
+      { url: '/images/logo-feg.png', type: 'image/png', media: '(prefers-color-scheme: light)' },
+      { url: '/images/logo_FEG_blanc.png', type: 'image/png', media: '(prefers-color-scheme: dark)' },
+      { url: '/images/logo-feg.png', type: 'image/png' },
     ],
-    apple: '/apple-icon.png',
+    apple: '/images/logo-feg.png',
   },
 }
 

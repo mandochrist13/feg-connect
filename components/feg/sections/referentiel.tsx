@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Scale, Users, FileCheck2, Handshake } from "lucide-react"
 import { Reveal } from "@/components/feg/reveal"
 
@@ -52,6 +53,21 @@ export function Referentiel() {
                 chaque année.
               </p>
             </div>
+
+            <figure className="relative mt-4 h-52 overflow-hidden rounded-2xl shadow-[0_24px_50px_-30px_rgba(20,56,35,0.4)] sm:h-60">
+              <Image
+                src="/images/FB_IMG_1750354687673.jpg"
+                alt="Vue aérienne du développement urbain de Libreville, en bord de mer"
+                fill
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover"
+              />
+              {/* Léger voile vert pour ancrer la photo dans la charte FEG */}
+              <div
+                className="absolute inset-0 bg-linear-to-t from-feg-forest/45 via-transparent to-transparent"
+                aria-hidden="true"
+              />
+            </figure>
           </Reveal>
 
           <div className="grid gap-5 sm:grid-cols-2">

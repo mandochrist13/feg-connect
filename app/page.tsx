@@ -24,8 +24,8 @@ export default function Page() {
         <Referentiel />
         <Features />
         <Collaboration />
-        <Opportunities />
-        <Stats />
+        {/* <Opportunities /> */}
+        {/* <Stats /> */}
         <Pricing />
         <FinalCta />
       </main>

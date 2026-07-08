@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Reveal } from "@/components/feg/reveal"
 
 const modes = [
@@ -34,6 +35,32 @@ export function Collaboration() {
             Choisissez le cadre qui correspond à votre projet et à votre niveau de
             responsabilité.
           </p>
+        </Reveal>
+
+        <Reveal delay={100}>
+          <figure className="relative mt-12 h-64 overflow-hidden rounded-3xl shadow-[0_30px_60px_-30px_rgba(10,38,22,0.45)] sm:h-80">
+            <Image
+              src="/images/556371082_767582622721568_892145445618033723_n-1.webp"
+              alt="Vue aérienne d'un grand projet de développement en bord de mer à Libreville"
+              fill
+              sizes="(min-width: 1280px) 1216px, 100vw"
+              className="object-cover"
+            />
+            {/* Voile vert FEG pour l'unité visuelle et la lisibilité de la légende */}
+            <div
+              className="absolute inset-0 bg-linear-to-t from-feg-deep/80 via-feg-forest/25 to-feg-forest/10"
+              aria-hidden="true"
+            />
+            <figcaption className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-6 text-white sm:p-8">
+              <span className="text-xs font-bold uppercase tracking-[0.18em] text-feg-gold-soft">
+                Des projets d&apos;envergure
+              </span>
+              <span className="max-w-xl text-sm leading-relaxed text-white/85 sm:text-base">
+                Sous-traitance, groupements solidaires ou conjoints — chaque grand chantier du
+                réseau mobilise plusieurs entreprises certifiées autour d&apos;un même objectif.
+              </span>
+            </figcaption>
+          </figure>
         </Reveal>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
