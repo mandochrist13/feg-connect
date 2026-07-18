@@ -2,6 +2,7 @@ import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Reveal } from "@/components/feg/reveal"
+import { Underline } from "@/components/feg/underline"
 
 export function FinalCta() {
   return (
@@ -31,26 +32,27 @@ export function FinalCta() {
             Rejoignez le réseau
           </span>
           <h2 className="mt-6 text-balance text-3xl font-extrabold leading-tight sm:text-5xl">
-            Prêt à rejoindre le standard de confiance B2B au Gabon&nbsp;?
+            Prêt à rejoindre le réseau B2B du secteur <Underline> privé formel</Underline>&nbsp;?
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-pretty text-lg text-white/65">
-            Faites certifier votre entreprise ou publiez votre premier appel d&apos;offres —
-            l&apos;écosystème FEG Connect vous attend.
+            Rejoignez les entreprises membres de la FEG ou publiez votre premier appel
+            d&apos;offres — l&apos;écosystème FEG Connect vous attend.
           </p>
         </Reveal>
         <Reveal delay={150}>
           <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
             <Button
               size="lg"
-              className="group h-12 rounded-full bg-feg-amber px-7 text-base font-semibold text-feg-deep hover:bg-feg-amber-bright"
+              variant="fegGold"
+              className="group h-12 min-w-50 rounded-md px-7 text-base"
             >
-              Devenir prestataire certifié
+              Devenir prestataire
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
             <Button
               size="lg"
-              variant="outline"
-              className="h-12 rounded-full border-[1.5px] border-white/30 bg-transparent px-7 text-base font-semibold text-white hover:border-white hover:bg-white/10 hover:text-white"
+              variant="feg"
+              className="h-12 min-w-50 rounded-md border border-white/20 px-7 text-base"
             >
               Publier un appel d&apos;offres
             </Button>

@@ -16,9 +16,9 @@ const jakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'FEG Connect — Marketplace Sous-traitance & Cotraitance B2B',
+  title: 'FEG Connect - Marketplace Sous-traitance & Cotraitance B2B',
   description:
-    'La marketplace B2B fermée de la Fédération des Entreprises du Gabon. Trouvez des prestataires certifiés par le Label FEG ou répondez aux appels d’offres du réseau.',
+    'La marketplace B2B de la Fédération des Entreprises du Gabon. Mettez-vous en relation avec les entreprises membres — le réseau du secteur privé formel gabonais — et répondez aux appels d’offres. Le Label FEG en gage de confiance.',
   generator: 'v0.app',
   icons: {
     icon: [

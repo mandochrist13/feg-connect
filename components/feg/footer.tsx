@@ -31,7 +31,8 @@ export function Footer() {
           <div className="flex flex-col gap-4">
             <FegLogo variant="light" />
             <p className="max-w-xs text-sm leading-relaxed text-white/60">
-              Connecter les entreprises du Gabon dans un cadre certifié de confiance.
+              Mettre en relation les entreprises membres de la FEG — le réseau du secteur privé
+              formel gabonais.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <a
@@ -91,8 +92,8 @@ export function Footer() {
             ))}
           </div>
           <p className="text-xs text-white/45">
-            © 2026 FEG Connect — Fédération des Entreprises du Gabon. La FEG atteste la
-            conformité des entreprises certifiées&nbsp;; la décision de sélection appartient au
+            © 2026 FEG Connect — Fédération des Entreprises du Gabon. La FEG met en relation les
+            entreprises du secteur privé formel&nbsp;; la décision de sélection appartient au
             donneur d&apos;ordre.
           </p>
         </div>

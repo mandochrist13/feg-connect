@@ -213,6 +213,15 @@
   }
 }
 
+@keyframes feg-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 @keyframes feg-float {
   0%,
   100% {
@@ -281,6 +290,11 @@
   animation: feg-float 7s ease-in-out infinite;
 }
 
+/* Bouton doré à reflet balayant (variante fegGold) */
+.feg-shimmer {
+  animation: feg-shimmer 3s linear infinite;
+}
+
 /* Point "live" avec halo */
 .feg-live-dot {
   position: relative;
@@ -300,6 +314,50 @@
   background-size: 26px 26px;
 }
 
+/* Timeline « route » — processus de labellisation.
+   Le conteneur .feg-timeline reçoit .is-active au scroll : la route se trace
+   (stroke-dashoffset), puis nœuds et libellés apparaissent en cascade (--i). */
+.feg-road-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 2.2s var(--ease-feg);
+  transition-delay: 100ms;
+}
+.feg-timeline.is-active .feg-road-path {
+  stroke-dashoffset: 0;
+}
+
+.feg-road-dash {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  transition-delay: 0.9s;
+}
+.feg-timeline.is-active .feg-road-dash {
+  opacity: 1;
+}
+
+.feg-road-node {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.4);
+  transition:
+    opacity 0.45s var(--ease-feg),
+    transform 0.45s var(--ease-feg);
+  transition-delay: calc(300ms + var(--i, 0) * 240ms);
+}
+.feg-timeline.is-active .feg-road-node {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.feg-road-label {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  transition-delay: calc(430ms + var(--i, 0) * 240ms);
+}
+.feg-timeline.is-active .feg-road-label {
+  opacity: 1;
+}
+
 /* Accessibilité — mouvement réduit */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -316,6 +374,9 @@
   .feg-float {
     animation: none;
   }
+  .feg-shimmer {
+    animation: none;
+  }
   .feg-live-dot::after {
     animation: none;
     opacity: 0;
@@ -329,5 +390,19 @@
   }
   .feg-marquee-track-y {
     flex-wrap: wrap;
+  }
+  .feg-road-path {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .feg-road-dash,
+  .feg-road-label {
+    opacity: 1;
+    transition: none;
+  }
+  .feg-road-node {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    transition: none;
   }
 }

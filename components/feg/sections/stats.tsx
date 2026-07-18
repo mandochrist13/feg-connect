@@ -3,7 +3,7 @@ import { Reveal } from "@/components/feg/reveal"
 const stats = [
   { value: "10–20", label: "entreprises pilotes" },
   { value: "5", label: "secteurs cibles" },
-  { value: "17", label: "États couverts par la marque OAPI" },
+  { value: "100%", label: "entreprises membres vérifiées & en règle" },
   { value: "A–D", label: "blocs du référentiel d'évaluation" },
 ]
 

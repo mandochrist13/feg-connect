@@ -10,9 +10,8 @@ const navItems = [
   { label: "Accueil", href: "#accueil" },
   { label: "Comment ça marche", href: "#comment" },
   { label: "Label FEG", href: "#label" },
-  { label: "Appels d'offres", href: "#appels-offres" },
   { label: "Tarifs", href: "#tarifs" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "https://lafeg.ga/contact" },
 ]
 
 export function Header() {
@@ -98,7 +97,7 @@ export function Header() {
           <span
             aria-hidden="true"
             className={cn(
-              "pointer-events-none absolute inset-y-1 rounded-full bg-white/70 ring-1 ring-feg-gold/45 backdrop-blur-md",
+              "pointer-events-none absolute inset-y-1 rounded-full bg-white/70 ring-1 ring-feg-gold/10 backdrop-blur-md",
               "shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_4px_rgba(6,61,33,0.10),0_10px_22px_-12px_rgba(6,61,33,0.55)]",
               "transition-[left,width,opacity] duration-500 ease-feg",
               indicator.ready ? "opacity-100" : "opacity-0",
@@ -131,7 +130,7 @@ export function Header() {
           >
             Se connecter
           </a>
-          <Button className="group h-10 rounded-full bg-feg-green px-5 font-semibold text-white hover:bg-feg-green/90">
+          <Button variant="feg" className="group h-10 rounded-md px-5 font-semibold">
             S&apos;inscrire
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </Button>
@@ -174,7 +173,7 @@ export function Header() {
               <a href="#" className="px-3 py-2 text-sm font-semibold text-feg-green">
                 Se connecter
               </a>
-              <Button className="rounded-full bg-feg-green font-semibold text-white hover:bg-feg-green/90">
+              <Button variant="feg" className="rounded-md font-semibold">
                 S&apos;inscrire
               </Button>
             </div>

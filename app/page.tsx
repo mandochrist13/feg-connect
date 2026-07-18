@@ -21,7 +21,7 @@ export default function Page() {
         <Problem />
         <Profiles />
         <Label />
-        <Referentiel />
+        {/* <Referentiel /> */}
         <Features />
         <Collaboration />
         {/* <Opportunities /> */}

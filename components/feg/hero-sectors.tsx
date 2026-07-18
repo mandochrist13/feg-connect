@@ -22,9 +22,14 @@ const INTERVAL_MS = 4000
 
 export function HeroSectors() {
   const [i, setI] = useState(0)
+  // Le zoom lent (Ken Burns) est désactivé si l'utilisateur réduit les animations.
+  const [motion, setMotion] = useState(true)
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setMotion(false)
+      return
+    }
     const t = window.setInterval(() => setI((p) => (p + 1) % SECTORS.length), INTERVAL_MS)
     return () => window.clearInterval(t)
   }, [])
@@ -34,13 +39,24 @@ export function HeroSectors() {
       {/* Calques d'images empilés, transition croisée par opacité */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute inset-y-0 right-0 w-full lg:w-3/5">
-          {SECTORS.map((s, idx) => (
-            <div
-              key={s.key}
-              className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-feg"
-              style={{ backgroundImage: `url("${s.src}")`, opacity: idx === i ? 1 : 0 }}
-            />
-          ))}
+          {SECTORS.map((s, idx) => {
+            const active = idx === i
+            return (
+              <div
+                key={s.key}
+                className="absolute inset-0 bg-cover bg-center ease-feg will-change-transform"
+                style={{
+                  backgroundImage: `url("${s.src}")`,
+                  opacity: active ? 1 : 0,
+                  // Léger overscale : l'image active grandit lentement tant qu'elle est visible.
+                  transform: active && motion ? "scale(1.08)" : "scale(1)",
+                  transitionProperty: "opacity, transform",
+                  // Fondu rapide (1s) mais zoom lent (6s) pour un effet discret.
+                  transitionDuration: active ? "1000ms, 6000ms" : "1000ms, 1000ms",
+                }}
+              />
+            )
+          })}
         </div>
         {/* Fondu vers le blanc : texte lisible à gauche, photo estompée à droite */}
         <div className="absolute inset-0 bg-linear-to-r from-white via-white/92 to-white/45" />

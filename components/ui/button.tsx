@@ -19,6 +19,17 @@ const buttonVariants = cva(
         ghost:
           'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
+        // ── Signature FEG — shimmer (cf. guide-numerique.lafeg.ga) ─
+        // Primaire : dégradé vert à reflet balayant continu.
+        feg:
+          'feg-shimmer bg-[length:200%_100%] bg-[linear-gradient(110deg,#0B3E23,45%,#386140,55%,#0B3E23)] text-white font-semibold transition-[filter] duration-300 hover:brightness-110',
+        // Secondaire bronze : au survol, un voile vert monte du bas (before),
+        // le texte passe au blanc. Le remplissage reste sous le texte.
+        fegGold:
+          'relative isolate overflow-hidden bg-[#b0b08b] text-white font-semibold ease-feg transition-colors duration-500 hover:text-[#063a1e] before:absolute before:inset-0 before:-z-10 before:translate-y-full before:bg-[#e6e4b4]/70 before:transition-transform before:duration-500 before:ease-feg hover:before:translate-y-0',
+        // Contour vert qui se remplit de vert au survol (texte -> blanc).
+        fegOutline:
+          'relative isolate overflow-hidden border-[1.5px] border-feg-green bg-transparent text-feg-green ease-feg transition-colors duration-500 hover:text-white before:absolute before:inset-0 before:-z-10 before:translate-y-full before:bg-feg-green before:transition-transform before:duration-500 before:ease-feg hover:before:translate-y-0',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',

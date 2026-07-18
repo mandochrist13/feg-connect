@@ -1,6 +1,7 @@
 import { ArrowRight, FileText, ClipboardCheck, BadgeCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Reveal } from "@/components/feg/reveal"
+import { Underline } from "@/components/feg/underline"
 
 const tiers = [
   {
@@ -33,7 +34,7 @@ export function Pricing() {
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-feg-green">Tarifs</p>
           <h2 className="mt-3 text-balance text-3xl font-bold text-feg-green sm:text-4xl">
-            Une tarification claire et transparente
+            Une tarification claire et <Underline>transparente</Underline>
           </h2>
           <p className="mt-4 text-pretty text-lg text-muted-ink">
             Trois étapes, trois montants — aucun coût caché sur le parcours de certification.
@@ -70,7 +71,8 @@ export function Pricing() {
         <Reveal className="mt-12 flex justify-center" delay={150}>
           <Button
             size="lg"
-            className="group h-12 rounded-full bg-feg-green px-6 font-semibold text-white hover:bg-feg-forest"
+            variant="feg"
+            className="group h-12 min-w-50 rounded-md px-6 font-semibold"
           >
             Voir tous les tarifs
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />

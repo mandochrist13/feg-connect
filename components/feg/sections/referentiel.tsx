@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { Scale, Users, FileCheck2, Handshake } from "lucide-react"
 import { Reveal } from "@/components/feg/reveal"
+import { Underline } from "@/components/feg/underline"
 
 const pillars = [
   {
@@ -39,7 +40,7 @@ export function Referentiel() {
               Le référentiel
             </p>
             <h2 className="text-balance text-3xl font-bold text-feg-green sm:text-4xl">
-              Quatre blocs d&apos;évaluation, un langage commun
+              Quatre blocs d&apos;évaluation, un <Underline>langage commun</Underline>
             </h2>
             <p className="text-pretty text-lg leading-relaxed text-muted-ink">
               Chaque entreprise est évaluée sur le même référentiel A–D. Le résultat est un
