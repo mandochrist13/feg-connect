@@ -66,8 +66,9 @@ export function Opportunities() {
         <Reveal delay={200}>
           <p className="mt-8 flex items-start gap-2 text-sm text-muted-ink sm:items-center">
             <Info className="mt-0.5 size-4 shrink-0 text-feg-green sm:mt-0" aria-hidden="true" />
-            Chaque appel déclenche une présélection automatique de prestataires certifiés — la
-            décision finale appartient au donneur d&apos;ordre.
+            Chaque appel d&apos;offres est visible par les entreprises membres du secteur
+            concerné, dans l&apos;ordre de publication — la décision finale appartient toujours
+            au donneur d&apos;ordre.
           </p>
         </Reveal>
       </div>

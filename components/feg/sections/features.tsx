@@ -16,8 +16,8 @@ const features = [
   {
     Icon: SlidersHorizontal,
     tag: "Comparaison",
-    title: "Comparateur multicritères",
-    desc: "Comparez les candidats selon leur profil, le prix, le délai et le Label FEG — en un seul coup d'œil, en toute transparence.",
+    title: "Vue comparative",
+    desc: "Consultez les candidatures reçues avec leur profil, leur prix, leur délai et leur statut Label FEG affichés côte à côte, dans l'ordre de réception — sans classement automatique. La décision reste la vôtre.",
     image: "/images/feature-comparateur.jpg",
     alt: "Analyse comparative de graphiques et d'indicateurs chiffrés sur un bureau",
   },

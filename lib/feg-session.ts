@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { headers } from "next/headers"
 
 /**
@@ -25,6 +26,9 @@ export type FegToken = {
   date_adhesion?: string
   statutAdhesion?: "ACTIF" | "INACTIF" | "SUSPENDU"
   isProfileComplete?: boolean
+  // Statut du Label FEG — absent sur un jeton émis avant cette évolution SSO
+  // (à traiter comme non délivré, cf. proxy.ts et /eligibilite).
+  labelStatus?: "AUCUN" | "EN_COURS" | "DELIVRE" | "RETIRE"
 }
 
 /** En-tête interne où le middleware place l'identité FEG (JSON encodé URI). */
@@ -41,6 +45,7 @@ export type FegSession = Pick<
   | "entreprise"
   | "statutAdhesion"
   | "isProfileComplete"
+  | "labelStatus"
 >
 
 /** Le rôle FEG désigne-t-il un administrateur de la plateforme ? (spec §6) */
@@ -59,8 +64,9 @@ export function encodeFegSession(session: FegSession): string {
  * Lit l'identité FEG injectée par le middleware. À utiliser dans les
  * Server Components / Server Actions. Renvoie null si absente (route publique
  * ou erreur) — les routes protégées ont toujours cette valeur.
+ * Mémoïsé par requête (React cache) : appelable depuis layout + page.
  */
-export async function getFegSession(): Promise<FegSession | null> {
+export const getFegSession = cache(async (): Promise<FegSession | null> => {
   const raw = (await headers()).get(FEG_SESSION_HEADER)
   if (!raw) return null
   try {
@@ -68,4 +74,4 @@ export async function getFegSession(): Promise<FegSession | null> {
   } catch {
     return null
   }
-}
+})

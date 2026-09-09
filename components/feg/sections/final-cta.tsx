@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Reveal } from "@/components/feg/reveal"
 import { Underline } from "@/components/feg/underline"
+import { FEG_ADHESION_URL } from "@/lib/feg-links"
 
 export function FinalCta() {
   return (
@@ -42,19 +43,23 @@ export function FinalCta() {
         <Reveal delay={150}>
           <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
             <Button
+              asChild
               size="lg"
               variant="fegGold"
               className="group h-12 min-w-50 rounded-md px-7 text-base"
             >
-              Devenir prestataire
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <a href={FEG_ADHESION_URL}>
+                Devenir prestataire
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
             </Button>
             <Button
+              asChild
               size="lg"
               variant="feg"
               className="h-12 min-w-50 rounded-md border border-white/20 px-7 text-base"
             >
-              Publier un appel d&apos;offres
+              <a href="/dashboard">Publier un appel d&apos;offres</a>
             </Button>
           </div>
         </Reveal>

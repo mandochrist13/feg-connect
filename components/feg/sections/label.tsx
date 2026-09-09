@@ -3,37 +3,28 @@ import { Reveal } from "@/components/feg/reveal"
 import { Parallax } from "@/components/feg/parallax"
 import { LevelsRoadmap } from "@/components/feg/levels-roadmap"
 import { Underline } from "@/components/feg/underline"
-import { cn } from "@/lib/utils"
 
+// Le parcours réel vers le Label : on est d'abord membre de la FEG, puis on
+// constitue son dossier pour l'audit, et le Label n'est délivré qu'ensuite.
 const levels = [
   {
-    level: "none" as const,
-    title: "Non certifié",
-    desc: "Profil en cours de constitution — visibilité limitée sur la plateforme.",
-    highlight: false,
-  },
-  {
-    level: "member" as const,
+    key: "member" as const,
     title: "Membre FEG",
-    desc: "Adhésion validée et documents administratifs conformes au référentiel.",
+    desc: "L'entreprise adhère d'abord à la FEG — le point de départ, avant toute labellisation.",
     highlight: false,
   },
   {
-    level: "certified" as const,
-    title: "Certifié FEG",
-    desc: "Indice élevé et audit tiers conforme — attestation de fiabilité, sans recommandation.",
+    key: "dossier" as const,
+    title: "Dossier & audit",
+    desc: "Elle constitue son dossier, remplit les formalités, et la FEG vérifie et audite sa conformité.",
+    highlight: false,
+  },
+  {
+    key: "label" as const,
+    title: "Label délivré",
+    desc: "Une fois le dossier vérifié et l'audit conforme, la FEG délivre le Label.",
     highlight: true,
   },
-]
-
-const steps = [
-  "Candidature",
-  "Auto-évaluation",
-  "Audit tiers",
-  "Calcul de l'indice",
-  "Licence",
-  "Remise du label",
-  "Surveillance annuelle",
 ]
 
 export function Label() {
@@ -106,33 +97,6 @@ export function Label() {
             </div>
           </div>
         </Reveal>
-
-        {/* <Reveal className="mt-20" delay={120}>
-          <h3 className="text-center text-sm font-bold uppercase tracking-[0.18em] text-feg-gold-soft">
-            Le processus de labellisation en 7 étapes
-          </h3>
-          <ol className="relative mt-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 lg:grid-cols-7">
-            <span
-              className="pointer-events-none absolute left-[7%] right-[7%] top-5 hidden h-px bg-linear-to-r from-transparent via-feg-khaki/50 to-transparent lg:block"
-              aria-hidden="true"
-            />
-            {steps.map((step, i) => (
-              <li key={step} className="relative flex flex-col items-center gap-3 text-center">
-                <span
-                  className={cn(
-                    "grid size-10 place-items-center rounded-full text-sm font-bold ring-4 ring-feg-forest transition-transform duration-300 hover:scale-110",
-                    i === steps.length - 1
-                      ? "bg-feg-amber text-feg-deep"
-                      : "bg-feg-moss text-feg-cream",
-                  )}
-                >
-                  {i + 1}
-                </span>
-                <span className="text-xs font-semibold leading-tight text-white/75">{step}</span>
-              </li>
-            ))}
-          </ol>
-        </Reveal> */}
       </div>
     </section>
   )

@@ -8,7 +8,7 @@ const config: Record<
   { label: string; className: string; Icon: typeof BadgeCheck }
 > = {
   certified: {
-    label: "Certifié FEG",
+    label: "Label délivré",
     className: "bg-feg-amber text-feg-deep",
     Icon: BadgeCheck,
   },

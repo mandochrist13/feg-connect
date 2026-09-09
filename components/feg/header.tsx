@@ -5,6 +5,7 @@ import { Menu, X, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FegLogo } from "@/components/feg/feg-logo"
 import { cn } from "@/lib/utils"
+import { FEG_ADHESION_URL, ESPACE_ADHERENT_URL } from "@/lib/feg-links"
 
 const navItems = [
   { label: "Accueil", href: "#accueil" },
@@ -125,14 +126,16 @@ export function Header() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <a
-            href="#"
+            href={ESPACE_ADHERENT_URL}
             className="text-sm font-semibold text-feg-green transition-colors hover:text-feg-green/70"
           >
             Se connecter
           </a>
-          <Button variant="feg" className="group h-10 rounded-md px-5 font-semibold">
-            S&apos;inscrire
-            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+          <Button asChild variant="feg" className="group h-10 rounded-md px-5 font-semibold">
+            <a href={FEG_ADHESION_URL}>
+              S&apos;inscrire
+              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </a>
           </Button>
         </div>
 
@@ -170,11 +173,11 @@ export function Header() {
               )
             })}
             <div className="mt-2 flex flex-col gap-2 border-t border-feg-green/10 pt-4">
-              <a href="#" className="px-3 py-2 text-sm font-semibold text-feg-green">
+              <a href={ESPACE_ADHERENT_URL} className="px-3 py-2 text-sm font-semibold text-feg-green">
                 Se connecter
               </a>
-              <Button variant="feg" className="rounded-md font-semibold">
-                S&apos;inscrire
+              <Button asChild variant="feg" className="rounded-md font-semibold">
+                <a href={FEG_ADHESION_URL}>S&apos;inscrire</a>
               </Button>
             </div>
           </nav>

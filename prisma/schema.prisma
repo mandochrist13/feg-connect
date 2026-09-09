@@ -1,5 +1,7 @@
 // ─────────────────────────────────────────────────────────────
-// Outil Sous-traitance — Base MÉTIER (séparée de l'Espace Adhérent)
+// Outil Sous-traitance — schema Postgres dédié `feg_connect`, isolé de
+// celui de l'Espace Adhérent (même instance Supabase, schemas distincts —
+// voir prisma.config.ts et lib/prisma.ts).
 // SSO : Profile.userId = token.id (id de l'adhérent FEG). Seule liaison
 // inter-bases. Aucune fuite de données entre les deux apps (spec §9.2).
 // ─────────────────────────────────────────────────────────────
@@ -84,12 +86,16 @@ model Profile {
   // Statut d'adhésion FEG lu via SSO (miroir, spec §5.4).
   membershipStatus String?
 
+  // Cache de revalidation active du statut/Label (SSO, contrôle d'accès) —
+  // évite de dépendre uniquement de la fraîcheur du JWT côté émetteur.
+  labelStatusCache String?
+  statusCheckedAt  DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   provider     Provider?
   tenders      Tender[]  @relation("DonneurOrdreTenders")
-  reviewsGiven Review[]  @relation("ReviewAuthor")
   messagesSent Message[] @relation("MessageSender")
   messagesRecv Message[] @relation("MessageRecipient")
   flagsRaised  Flag[]    @relation("FlagReporter")
@@ -107,17 +113,11 @@ model Provider {
 
   labelLevel LabelLevel @default(NON_CERTIFIE)
 
-  // Indice de fiabilité — INDICATIF, non contractuel (spec §3, §9.2).
-  // Dérivé des Review ; recalculé, jamais saisi à la main.
-  indiceIndicatif Float?
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   labelFile        LabelFile?
   bids             Bid[]
-  reviews          Review[]
-  shortlistItems   ShortlistItem[]
   groupMemberships GroupMember[]
 }
 
@@ -159,44 +159,15 @@ model Tender {
   budget  Int?
   delai   String?
 
-  minLabelLevel LabelLevel? // ciblage (spec §8.2)
-  criteria      Json? // pondérations publiées des critères de tri
+  minLabelLevel LabelLevel? // ciblage factuel (spec §8.2) — pas un score
 
   status TenderStatus @default(BROUILLON)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  shortlist Shortlist?
-  bids      Bid[]
-  group     Group?
-}
-
-// ── Présélection automatique (résultat d'algorithme) ─────────
-
-model Shortlist {
-  id       String @id @default(cuid())
-  tenderId String @unique
-  tender   Tender @relation(fields: [tenderId], references: [id], onDelete: Cascade)
-
-  // Horodatage + critères tracés (spec §9.1). Généré, jamais écrit à la main.
-  generatedAt DateTime @default(now())
-  criteria    Json
-
-  items ShortlistItem[]
-}
-
-model ShortlistItem {
-  id          String    @id @default(cuid())
-  shortlistId String
-  shortlist   Shortlist @relation(fields: [shortlistId], references: [id], onDelete: Cascade)
-  providerId  String
-  provider    Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
-
-  rang  Int // rang objectif issu du tri pondéré
-  score Float
-
-  @@unique([shortlistId, providerId])
+  bids  Bid[]
+  group Group?
 }
 
 // ── Offre ────────────────────────────────────────────────────
@@ -258,21 +229,6 @@ model Message {
   body      String
   createdAt DateTime @default(now())
   readAt    DateTime?
-}
-
-// ── Évaluation client → alimente l'indice indicatif ──────────
-
-model Review {
-  id         String   @id @default(cuid())
-  providerId String
-  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  authorId   String
-  author     Profile  @relation("ReviewAuthor", fields: [authorId], references: [userId], onDelete: Cascade)
-
-  note      Int // évaluation transmise par le client
-  commentaire String?
-
-  createdAt DateTime @default(now())
 }
 
 // ── Signalement ──────────────────────────────────────────────

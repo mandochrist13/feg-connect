@@ -7,8 +7,8 @@ const fegLinks = [
   { label: "Activité", href: "#" },
 ]
 const platformLinks = [
-  { label: "Espace donneur d'ordre", href: "#" },
-  { label: "Espace prestataire", href: "#" },
+  { label: "Espace donneur d'ordre", href: "/donneur-ordre" },
+  { label: "Espace prestataire", href: "/prestataire" },
   { label: "Label FEG", href: "#label" },
   { label: "Tarifs", href: "#tarifs" },
 ]

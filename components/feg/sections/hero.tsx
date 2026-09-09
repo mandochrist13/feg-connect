@@ -3,6 +3,7 @@ import { ArrowRight, ShieldCheck, Gauge, Building2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { HeroSectors } from "@/components/feg/hero-sectors"
 import { Underline } from "@/components/feg/underline"
+import { FEG_ADHESION_URL } from "@/lib/feg-links"
 
 export function Hero() {
   return (
@@ -40,19 +41,23 @@ export function Hero() {
             style={{ "--enter-delay": "300ms" } as CSSProperties}
           >
             <Button
+              asChild
               size="lg"
               variant="feg"
               className="group h-12 min-w-50 px-6 text-base font-semibold"
             >
-              Publier un appel d&apos;offres
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <a href="/dashboard">
+                Publier un appel d&apos;offres
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
             </Button>
             <Button
+              asChild
               size="lg"
               variant="fegGold"
               className="h-12 min-w-50 px-6 text-base font-semibold"
             >
-              Devenir prestataire
+              <a href={FEG_ADHESION_URL}>Devenir prestataire</a>
             </Button>
           </div>
 

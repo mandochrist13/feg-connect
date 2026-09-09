@@ -1,21 +1,28 @@
 "use client"
 
 import { useEffect, useRef, type CSSProperties } from "react"
-import { ShieldAlert, Check, BadgeCheck, Flag, type LucideIcon } from "lucide-react"
-import { FegBadge } from "@/components/feg/feg-badge"
+import { Check, ClipboardCheck, BadgeCheck, Flag, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 type Level = {
-  level: "none" | "member" | "certified"
+  key: "member" | "dossier" | "label"
   title: string
   desc: string
   highlight: boolean
 }
 
-const ICONS: Record<Level["level"], LucideIcon> = {
-  none: ShieldAlert,
+const ICONS: Record<Level["key"], LucideIcon> = {
   member: Check,
-  certified: BadgeCheck,
+  dossier: ClipboardCheck,
+  label: BadgeCheck,
+}
+
+// Pastille du titre d'étape (remplace l'ancien badge de niveau de Label).
+function stepPillClass(isGoal: boolean): string {
+  return cn(
+    "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-tight",
+    isGoal ? "bg-feg-amber text-feg-deep" : "bg-feg-light-green text-feg-light-green-foreground",
+  )
 }
 
 // Route horizontale (unités du viewBox) : les arrêts s'égrènent de gauche à
@@ -95,7 +102,7 @@ export function LevelsRoadmap({ levels }: { levels: Level[] }) {
 
         {levels.map((l, i) => {
           const up = isUp(i)
-          const Icon = ICONS[l.level]
+          const Icon = ICONS[l.key]
           const isGoal = l.highlight
           const leftPct = xAt(i)
           const nodeTop = (yAt(i) / VB_H) * 100
@@ -142,9 +149,9 @@ export function LevelsRoadmap({ levels }: { levels: Level[] }) {
                     isGoal ? "text-feg-amber-bright" : "text-feg-gold-soft",
                   )}
                 >
-                  {isGoal ? "Objectif" : `Niveau ${i + 1}`}
+                  {isGoal ? "Objectif" : `Étape ${i + 1}`}
                 </span>
-                <FegBadge level={l.level} />
+                <span className={stepPillClass(isGoal)}>{l.title}</span>
                 <p className="text-sm leading-relaxed text-white">{l.desc}</p>
               </div>
             </div>
@@ -159,7 +166,7 @@ export function LevelsRoadmap({ levels }: { levels: Level[] }) {
           aria-hidden="true"
         />
         {levels.map((l, i) => {
-          const Icon = ICONS[l.level]
+          const Icon = ICONS[l.key]
           const isGoal = l.highlight
           return (
             <li
@@ -185,9 +192,9 @@ export function LevelsRoadmap({ levels }: { levels: Level[] }) {
                     isGoal ? "text-feg-amber-bright" : "text-feg-gold-soft",
                   )}
                 >
-                  {isGoal ? "Objectif" : `Niveau ${i + 1}`}
+                  {isGoal ? "Objectif" : `Étape ${i + 1}`}
                 </span>
-                <FegBadge level={l.level} />
+                <span className={stepPillClass(isGoal)}>{l.title}</span>
                 <p className="text-sm leading-relaxed text-white/70">{l.desc}</p>
               </div>
             </li>
